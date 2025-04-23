@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>入力内容の確認</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: sans-serif;
+        }
+        dt {
+            font-weight: bold;
+            margin-top: 1em;
+        }
+        dd {
+            margin: 0 0 1em 1em;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>入力内容の確認</h1>
+    <form method="POST">
+        <dl>
+            {% for key, value in responses.items() %}
+                <dt>{{ key }}</dt>
+                <dd>{{ value | safe }}</dd>
+            {% endfor %}
+        </dl>
+        <button type="submit">この内容でプロンプトを生成</button>
+    </form>
+    <form action="{{ url_for('form') }}" method="get" style="margin-top: 10px;">
+        <button type="submit">入力画面に戻る</button>
+    </form>
+</div>
+</body>
+</html>
