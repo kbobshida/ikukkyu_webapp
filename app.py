@@ -36,22 +36,13 @@ def form():
             q23_list.append(f"（内容：{q23_other}）")
         responses["q23"] = "、".join(q23_list)
 
-        # セッションに保存して /confirm にリダイレクト
         session["responses"] = responses
-        return redirect(url_for("confirm"))
+        return redirect(url_for("result"))
 
     return render_template("form.html")
 
 
-@app.route("/confirm", methods=["GET", "POST"])
-def confirm():
-    responses = session.get("responses", {})
-    if request.method == "POST":
-        return redirect(url_for("result"))
-    return render_template("confirm.html", responses=responses)
-
-
-@app.route("/result", methods=["GET", "POST"])
+@app.route("/result", methods=["GET"])
 def result():
     responses = session.get("responses", {})
     return render_template("result.html", responses=responses)
