@@ -2,217 +2,237 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>育休プランフォーム</title>
+    <title>育休プラン作成フォーム</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         .example {
-            display: block;
             font-size: 0.9em;
             color: #666;
             margin-top: 4px;
+        }
+        .form-group {
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>育休プラン作成フォーム</h1>
+
     <div class="description-box" style="margin-bottom: 20px; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #007BFF;">
         <h2>このフォームの使い方</h2>
-        <p>このフォームは、育児休業の取得計画を立てるための「プロンプト（AIへの指示文）」を自動で作成するツールです。</p>
-        <p>下記の23項目にご回答いただくと、それをもとに ChatGPT に貼り付け可能なテキスト形式のプロンプトが生成されます。</p>
-        <p><strong>※本フォームはChatGPTに自動送信されません。</strong>生成されたプロンプトをコピーし、ChatGPTに手動で貼り付けてご利用ください。</p>
+        <p>このフォームは、「＊＊育休計画プロンプト② 情報共有（共働き、第一子の場合）」に必要な情報を入力するためのものです。</p>
+        <p>すべての質問に回答すると、あなた専用のプロンプト（AIへの指示文）が自動生成されます。</p>
+        <p><strong>※フォーム送信後、自動でChatGPTに送信されることはありません。</strong><br>
+           生成されたプロンプトをコピーして、手動でChatGPTに貼り付けてください。</p>
         <ol>
-          <li>質問にすべて回答</li>
-          <li>「プロンプトを生成する」ボタンをクリック</li>
-          <li>表示されたプロンプトをコピー</li>
-          <li><a href="https://chat.openai.com/" target="_blank">ChatGPT</a> に貼り付けて実行</li>
+            <li>フォームの各項目に回答する</li>
+            <li>「プロンプトを生成する」ボタンを押す</li>
+            <li>生成されたプロンプトをコピーする</li>
+            <li><a href="https://chat.openai.com/" target="_blank" style="font-weight:bold; color:#007BFF;">ChatGPT</a> に貼り付けて実行する</li>
         </ol>
-        <p>プロンプトには以下3種類の提案が含まれます：</p>
-        <ul>
-          <li>あなたの希望を最大限反映した育休取得プラン</li>
-          <li>経済的な給付金を最大化するプラン</li>
-          <li>パートナーと公平に分担するプラン</li>
-        </ul>
-      </div>      
-  
+    </div>
+    
+
     <form method="POST">
 
-        <div class="form-group">
-            <label>1. 出産予定日</label>
-            <input type="date" name="q1" required>
-        </div>
+    <!-- 基本情報 -->
+    <h2>＊基本情報</h2>
 
-        <div class="form-group">
-            <label>2. 第一子ですか？</label>
-            <label><input type="radio" name="q2" value="はい" required> はい</label>
-            <label><input type="radio" name="q2" value="いいえ"> いいえ</label>
-        </div>
+    <div class="form-group">
+        <label>出産予定日（年月日）</label>
+        <input type="date" name="q1" required>
+    </div>
 
-        <div class="form-group">
-            <label>3. 多胎児ですか？</label>
-            <label><input type="radio" name="q3" value="はい" required> はい</label>
-            <label><input type="radio" name="q3" value="いいえ"> いいえ</label>
-        </div>
+    <div class="form-group">
+        <label>産前休業開始予定日（任意）</label>
+        <div class="example">年月日・妻が専業主婦の場合は空欄</div>
+        <input type="date" name="q2">
+    </div>
 
-        <div class="form-group">
-            <label>4. 同居家族構成とサポート</label>
-            <label>【記入例】夫、妻、祖母（近居、週末にサポートあり）</label>
-            <textarea name="q4" required></textarea>
-        </div>
+    <div class="form-group">
+        <label>産前休業終了日（任意）</label>
+        <div class="example">出産予定日と同日・妻が専業主婦の場合は空欄</div>
+        <input type="date" name="q3">
+    </div>
 
-        <div class="form-group">
-            <label>5. 出産前後の別居・単身赴任の可能性</label>
-            <label><input type="radio" name="q5" value="はい" required> はい</label>
-            <label><input type="radio" name="q5" value="いいえ"> いいえ</label>
-            <label><input type="radio" name="q5" value="未定"> 未定</label>
-        </div>
+    <div class="form-group">
+        <label>妻の育休取得希望期間</label>
+        <div class="example">例：産前休業から翌年4月の慣らし保育（二週間程度）終了まで</div>
+        <textarea name="q4" required></textarea>
+    </div>
 
-        <div class="form-group">
-            <label>6. サポート可能な人・頻度</label>
-            <label>【記入例】祖母が月に2〜3回サポート予定</label>
-            <textarea name="q6" required></textarea>
-        </div>
+    <div class="form-group">
+        <label>夫の育休取得希望期間</label>
+        <div class="example">例：予定日を含む2ヶ月＋3月から慣らし保育終了まで1ヶ月</div>
+        <textarea name="q5" required></textarea>
+    </div>
 
-        <div class="form-group">
-            <label>7. 保育園の入園希望時期</label>
-            <select name="q7" required>
-                <option value="① 4月入園">① 4月入園</option>
-                <option value="② 1歳の誕生日月">② 1歳の誕生日月</option>
-                <option value="③ 空きが出しだい入園">③ 空きが出しだい入園</option>
-                <option value="④ 延長育休も想定">④ 延長育休も想定</option>
-                <option value="⑤ 兄姉に合わせたい">⑤ 兄姉に合わせたい</option>
-                <option value="⑥ 3歳から幼稚園">⑥ 3歳から幼稚園</option>
-                <option value="⑦ その他">⑦ その他</option>
-            </select>
-        </div>
+    <div class="form-group">
+        <label>妊娠中のお子さんは多胎児ですか？</label><br>
+        <label><input type="radio" name="q6" value="はい" required> はい</label>
+        <label><input type="radio" name="q6" value="いいえ"> いいえ</label>
+    </div>
 
-        <div class="form-group">
-            <label>8. 保育園の入園難易度</label>
-            <label><input type="radio" name="q8" value="高" required> 高</label>
-            <label><input type="radio" name="q8" value="中"> 中</label>
-            <label><input type="radio" name="q8" value="低"> 低</label>
-        </div>
+    <div class="form-group">
+        <label>お子さんは第一子ですか？</label><br>
+        <label><input type="radio" name="q7" value="はい" required> はい</label>
+        <label><input type="radio" name="q7" value="いいえ"> いいえ</label>
+    </div>
 
-        <div class="form-group">
-            <label>9. あなたの就業状況</label>
-            <label>【記入例】小売業 経理、正社員、勤続8年</label>
-            <textarea name="q9" required></textarea>
-        </div>
+    <div class="form-group">
+        <label>（第二子以降の場合）上の子どもの情報（任意）</label>
+        <div class="example">例：人数・年齢・通園状況／該当なしなら空欄</div>
+        <textarea name="q8" placeholder="該当なしの場合は空欄"></textarea>
+    </div>
 
-        <div class="form-group">
-            <label>10. パートナーの就業状況</label>
-            <label>【記入例】製造業、正社員、勤続8年</label>
-            <textarea name="q10" required></textarea>
-        </div>
+    <div class="form-group">
+        <label>保育園の入園希望時期（複数選択可）</label><br>
+        <label><input type="checkbox" name="q9" value="① 4月入園"> ① 4月入園</label><br>
+        <label><input type="checkbox" name="q9" value="② 1歳の誕生日月"> ② 1歳の誕生日月</label><br>
+        <label><input type="checkbox" name="q9" value="③ 空きが出次第"> ③ 空きが出次第</label><br>
+        <label><input type="checkbox" name="q9" value="④ 延長育休も想定"> ④ 延長育休も想定</label><br>
+        <label><input type="checkbox" name="q9" value="⑤ 兄姉に合わせたい"> ⑤ 兄姉に合わせたい</label><br>
+        <label><input type="checkbox" name="q9" value="⑥ 3歳から幼稚園"> ⑥ 3歳から幼稚園</label><br>
+        <label><input type="checkbox" name="q9" value="⑦ その他"> ⑦ その他</label><br>
+        <textarea name="q9_other" placeholder="その他の場合は具体的に記入してください（任意）"></textarea>
+    </div>
+    
 
-        <div class="form-group">
-            <label>11. あなたの勤務先に独自の産休・育休制度はありますか？</label>
-            <label>【記入例】有給の育休制度（1か月）あり</label>
-            <label><input type="radio" name="q11_option" value="特になし" required> 特になし</label>
-            <label><input type="radio" name="q11_option" value="あり"> あり</label>
-            <textarea name="q11" rows="2"></textarea>
-        </div>
+    <div class="form-group">
+        <label>保育園の入園難易度（任意）</label><br>
+        <label><input type="radio" name="q10" value="高"> 高</label>
+        <label><input type="radio" name="q10" value="中"> 中</label>
+        <label><input type="radio" name="q10" value="低"> 低</label>
+    </div>
 
-        <div class="form-group">
-            <label>12. パートナーの勤務先に独自制度はありますか？</label>
-            <label>【記入例】有給育休１ヶ月</label>
-            <label><input type="radio" name="q12_option" value="特になし" required> 特になし</label>
-            <label><input type="radio" name="q12_option" value="あり"> あり</label>
-            <textarea name="q12" rows="2"></textarea>
-        </div>
+    <div class="form-group">
+        <label>家族の別居・単身赴任の予定</label><br>
+        <label><input type="radio" name="q11" value="はい" required> はい</label>
+        <label><input type="radio" name="q11" value="いいえ"> いいえ</label>
+        <label><input type="radio" name="q11" value="未定"> 未定</label>
+    </div>
 
-        <div class="form-group">
-            <label>13. あなたの職場での育休理解度</label>
-            <label><input type="radio" name="q13" value="高" required> 高</label>
-            <label><input type="radio" name="q13" value="中"> 中</label>
-            <label><input type="radio" name="q13" value="低"> 低</label>
-        </div>
+    <div class="form-group">
+        <label>同居家族</label>
+        <div class="example">例：夫、妻</div>
+        <textarea name="q12" required></textarea>
+    </div>
 
-        <div class="form-group">
-            <label>14. パートナーの職場での育休理解度</label>
-            <label><input type="radio" name="q14" value="高" required> 高</label>
-            <label><input type="radio" name="q14" value="中"> 中</label>
-            <label><input type="radio" name="q14" value="低"> 低</label>
-        </div>
+    <div class="form-group">
+        <label>親族からの育児・家事サポートの有無・頻度</label>
+        <div class="example">例：実家の母から産後不定期でサポートあり</div>
+        <textarea name="q13" required></textarea>
+    </div>
 
-        <div class="form-group">
-            <label>15. パパ育休取得予定</label>
-            <label>【記入例】はい（出産翌月から2週間）</label>
-            <label><input type="radio" name="q15_option" value="はい" required> はい</label>
-            <label><input type="radio" name="q15_option" value="いいえ"> いいえ</label>
-            <textarea name="q15" rows="2"></textarea>
-        </div>
+    <!-- 仕事・職場の状況 -->
+    <h2>＊仕事・職場の状況</h2>
 
-        <div class="form-group">
-            <label>16. あなたの育休取得希望期間</label>
-            <label>【記入例】出産後から翌年4月の慣らし保育終了まで</label>
-            <textarea name="q16" required></textarea>
-        </div>
+    <div class="form-group">
+        <label>夫の就業状況</label>
+        <div class="example">例：正社員 フルタイム</div>
+        <textarea name="q14" required></textarea>
+    </div>
 
-        <div class="form-group">
-            <label>17. パートナーの育休取得希望期間</label>
-            <label>【記入例】出産後2か月＋4月の慣らし保育1か月</label>
-            <textarea name="q17" required></textarea>
-        </div>
+    <div class="form-group">
+        <label>妻の就業状況</label>
+        <div class="example">例：正社員 フルタイム</div>
+        <textarea name="q15" required></textarea>
+    </div>
 
-        <div class="form-group">
-            <label>18. 育休取得で重視したいポイント（複数選択可）</label>
-            <label><input type="checkbox" name="q18" value="① 給付金の最大化"> ① 給付金の最大化</label>
-            <label><input type="checkbox" name="q18" value="② 家庭での分担"> ② 家庭での分担</label>
-            <label><input type="checkbox" name="q18" value="③ キャリアの維持"> ③ キャリアの維持</label>
-            <label><input type="checkbox" name="q18" value="④ 子どもや家族との時間"> ④ 子どもや家族との時間</label>
-            <label><input type="checkbox" name="q18" value="⑤ パートナーとの協力"> ⑤ パートナーとの協力</label>
-            <label><input type="checkbox" name="q18" value="⑥ 心身の健康"> ⑥ 心身の健康</label>
-            <label><input type="checkbox" name="q18" value="⑦ ライフキャリアのバランス"> ⑦ ライフキャリアのバランス</label>
-            <label><input type="checkbox" name="q18" value="⑧ 職場との関係維持"> ⑧ 職場との関係維持</label>
-            <label><input type="checkbox" name="q18" value="⑨ 柔軟な働き方との両立"> ⑨ 柔軟な働き方との両立</label>
-            <label><input type="checkbox" name="q18" value="⑩ 家事・育児スキルの向上"> ⑩ 家事・育児スキルの向上</label>
-            <label><input type="checkbox" name="q18" value="⑪ 制度・サポートの活用"> ⑪ 制度・サポートの活用</label>
-            <label><input type="checkbox" name="q18" value="⑫ その他"> ⑫ その他</label>
-            <textarea name="q18_other" placeholder="その他の具体的な内容を記入してください（任意）"></textarea>
-        </div>
+    <div class="form-group">
+        <label>夫の職場に独自の産休・育休制度はありますか？</label>
+        <div class="example">例：有給育休1ヶ月あり</div>
+        <textarea name="q16" required></textarea>
+    </div>
 
-        <div class="form-group">
-            <label>19. あなたの育休後の働き方</label>
-            <label>【記入例】フルタイム復帰＋在宅勤務とフレックスを活用</label>
-            <textarea name="q19" required></textarea>
-        </div>
+    <div class="form-group">
+        <label>妻の職場に独自の産休・育休制度はありますか？</label>
+        <div class="example">例：なし</div>
+        <textarea name="q17" required></textarea>
+    </div>
 
-        <div class="form-group">
-            <label>20. パートナーの育休後の働き方</label>
-            <label>【記入例】フルタイム復帰（在宅勤務は不可）</label>
-            <textarea name="q20" required></textarea>
-        </div>
+    <div class="form-group">
+        <label>夫の職場での育休取得への理解度</label><br>
+        <label><input type="radio" name="q18" value="高" required> 高</label>
+        <label><input type="radio" name="q18" value="中"> 中</label>
+        <label><input type="radio" name="q18" value="低"> 低</label>
+    </div>
 
-        <div class="form-group">
-            <label>21. 家事代行・ベビーシッターなどの利用意向（複数選択可）</label>
-            <label><input type="checkbox" name="q21" value="① 家事代行"> ① 家事代行</label>
-            <label><input type="checkbox" name="q21" value="② 産後ヘルパー"> ② 産後ヘルパー</label>
-            <label><input type="checkbox" name="q21" value="③ ベビーシッター"> ③ ベビーシッター</label>
-            <label><input type="checkbox" name="q21" value="④ 自分たちで対応したい"> ④ 自分たちで対応したい</label>
-            <label><input type="checkbox" name="q21" value="⑤ その他"> ⑤ その他</label>
-            <textarea name="q21_other" placeholder="その他の具体的な内容を記入してください（任意）"></textarea>
-        </div>
+    <div class="form-group">
+        <label>妻の職場での育休取得への理解度</label><br>
+        <label><input type="radio" name="q19" value="高" required> 高</label>
+        <label><input type="radio" name="q19" value="中"> 中</label>
+        <label><input type="radio" name="q19" value="低"> 低</label>
+    </div>
 
-        <div class="form-group">
-            <label>22. 今不安に思っていること・知りたいこと</label>
-            <label>【記入例】給付金の受給時期、保育園の慣らし期間、職場復帰の流れ</label>
-            <textarea name="q22" required></textarea>
-        </div>
+    <div class="form-group">
+        <label>夫の育休後の働き方</label>
+        <div class="example">例：フルタイム・フレックス利用</div>
+        <textarea name="q20" required></textarea>
+    </div>
 
-        <div class="form-group">
-            <label>23. あなたの5年後のライフキャリアのイメージ（複数選択可）</label>
-            <label><input type="checkbox" name="q23" value="① 育児も仕事も大切にしたい"> ① 育児も仕事も大切にしたい</label>
-            <label><input type="checkbox" name="q23" value="② とにかくしばらくは育児を最優先にしたい"> ② とにかくしばらくは育児を最優先にしたい</label>
-            <label><input type="checkbox" name="q23" value="③ 今は育児優先だがキャリアも視野に"> ③ 今は育児優先だがキャリアも視野に</label>
-            <label><input type="checkbox" name="q23" value="④ 育児後にキャリア再加速したい"> ④ 育児後にキャリア再加速したい</label>
-            <label><input type="checkbox" name="q23" value="⑤ 責任ある仕事に挑戦したい"> ⑤ 責任ある仕事に挑戦したい</label>
-            <label><input type="checkbox" name="q23" value="⑥ パートナーと補完し合って両立したい"> ⑥ パートナーと補完し合って両立したい</label>
-            <label><input type="checkbox" name="q23" value="⑦ その他"> ⑦ その他</label>
-            <textarea name="q23_other" placeholder="その他の具体的な内容を記入してください（任意）"></textarea>
-        </div>
+    <div class="form-group">
+        <label>妻の育休後の働き方</label>
+        <div class="example">例：フルタイム・育児時間・週2日在宅勤務</div>
+        <textarea name="q21" required></textarea>
+    </div>
 
-        <button type="submit">プロンプトを生成する</button>
+    <!-- 希望と不安 -->
+    <h2>＊希望と不安</h2>
+
+    <div class="form-group">
+        <label>育休取得で重視したいこと（複数選択可）</label><br>
+        <label><input type="checkbox" name="q22" value="① 出産直後に夫婦で育児したい"> ① 出産直後に夫婦で育児したい</label><br>
+        <label><input type="checkbox" name="q22" value="② 妻の体調回復を優先したい"> ② 妻の体調回復を優先したい</label><br>
+        <label><input type="checkbox" name="q22" value="③ 妻が入院中の上の子のサポート"> ③ 妻が入院中の上の子のサポート</label><br>
+        <label><input type="checkbox" name="q22" value="④ 長期休暇中の上の子のサポート"> ④ 長期休暇中の上の子のサポート</label><br>
+        <label><input type="checkbox" name="q22" value="⑤ 家族の時間を確保したい"> ⑤ 家族の時間を確保したい</label><br>
+        <label><input type="checkbox" name="q22" value="⑥ 家事・育児スキルを高めたい"> ⑥ 家事・育児スキルを高めたい</label><br>
+        <label><input type="checkbox" name="q22" value="⑦ 家事・育児・仕事の協業体制を整えたい"> ⑦ 家事・育児・仕事の協業体制を整えたい</label><br>
+        <label><input type="checkbox" name="q22" value="⑧ キャリアとライフを両立したい"> ⑧ キャリアとライフを両立したい</label><br>
+        <label><input type="checkbox" name="q22" value="⑨ 職場との関係を維持したい"> ⑨ 職場との関係を維持したい</label><br>
+        <label><input type="checkbox" name="q22" value="⑩ 柔軟な働き方と両立したい"> ⑩ 柔軟な働き方と両立したい</label><br>
+        <label><input type="checkbox" name="q22" value="⑪ 経済的なロスを最小限に抑えたい"> ⑪ 経済的なロスを最小限に抑えたい</label><br>
+        <label><input type="checkbox" name="q22" value="⑫ その他"> ⑫ その他</label><br>
+    
+        <textarea name="q22_other" placeholder="その他の場合は具体的に記入してください（任意）"></textarea>
+    </div>
+    
+
+    <div class="form-group">
+        <label>家事代行・ベビーシッター等の利用意向（複数選択可）</label><br>
+        <label><input type="checkbox" name="q23" value="① 家事代行"> ① 家事代行</label><br>
+        <label><input type="checkbox" name="q23" value="② 産後ヘルパー"> ② 産後ヘルパー</label><br>
+        <label><input type="checkbox" name="q23" value="③ ベビーシッター"> ③ ベビーシッター</label><br>
+        <label><input type="checkbox" name="q23" value="④ 自分たちで対応したい"> ④ 自分たちで対応したい</label><br>
+        <label><input type="checkbox" name="q23" value="⑤ その他"> ⑤ その他</label><br>
+        <textarea name="q23_other" placeholder="その他の具体的な内容を記入してください（任意）"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>5年後のライフキャリアの希望（複数選択可）</label><br>
+        <label><input type="checkbox" name="q24" value="① 子どもが小さいうちは育児を最優先にしたい"> ① 子どもが小さいうちは育児を最優先にしたい</label><br>
+        <label><input type="checkbox" name="q24" value="② 育児も仕事も同じぐらい大切にしたい"> ② 育児も仕事も同じぐらい大切にしたい</label><br>
+        <label><input type="checkbox" name="q24" value="③ 育児を優先しつつ仕事もできるだけ頑張っていきたい"> ③ 育児を優先しつつ仕事もできるだけ頑張っていきたい</label><br>
+        <label><input type="checkbox" name="q24" value="④ 育児は大切にしつつ仕事での成長も視野に入れたい"> ④ 育児は大切にしつつ仕事での成長も視野に入れたい</label><br>
+        <label><input type="checkbox" name="q24" value="⑤ 責任ある仕事に挑戦したい"> ⑤ 責任ある仕事に挑戦したい</label><br>
+        <label><input type="checkbox" name="q24" value="⑥ パートナーと補完し合って両立したい"> ⑥ パートナーと補完し合って両立したい</label><br>
+        <label><input type="checkbox" name="q24" value="⑦ パートナーと自分の希望を叶え合うよう工夫しながらやりたい"> ⑦ パートナーと自分の希望を叶え合うよう工夫しながらやりたい</label><br>
+        <label><input type="checkbox" name="q24" value="⑧ その他"> ⑧ その他</label><br>
+    
+        <textarea name="q24_other" placeholder="その他の場合は具体的に記入してください（任意）"></textarea>
+    </div>
+    
+
+    <div class="form-group">
+        <label>今、不安に思っていること・知りたいこと</label>
+        <div class="example">例：親族が遠方のため夫婦二人で子育てできるかが不安、仕事との両立も不安</div>
+        <textarea name="q25" required></textarea>
+    </div>
+
+    <button type="submit">プロンプトを生成する</button>
+
     </form>
 </div>
 </body>
