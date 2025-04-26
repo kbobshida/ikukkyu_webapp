@@ -21,8 +21,8 @@
 
     <div class="description-box" style="margin-bottom: 20px; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #007BFF;">
         <h2>このフォームの使い方</h2>
-        <p>このフォームは、「＊＊育休計画プロンプト② 情報共有（共働き、第一子の場合）」に必要な情報を入力するためのものです。</p>
-        <p>すべての質問に回答すると、あなた専用のプロンプト（AIへの指示文）が自動生成されます。</p>
+        <p>このフォームは、「育休計画プロンプト2：私たち家族について」に必要な情報を入力するためのものです。</p>
+        <p>すべての質問に回答すると、あなた専用のプロンプト(ChatGPTへの指示文)が自動生成されます。</p>
         <p><strong>※フォーム送信後、自動でChatGPTに送信されることはありません。</strong><br>
            生成されたプロンプトをコピーして、手動でChatGPTに貼り付けてください。</p>
         <ol>
@@ -40,32 +40,34 @@
     <h2>＊基本情報</h2>
 
     <div class="form-group">
-        <label>出産予定日（年月日）</label>
+        <label>出産予定日</label>
         <input type="date" name="q1" required>
     </div>
 
     <div class="form-group">
-        <label>産前休業開始予定日（任意）</label>
-        <div class="example">年月日・妻が専業主婦の場合は空欄</div>
-        <input type="date" name="q2">
+        <label>
+            産前休業開始日（予定日の42日前、多胎児は98日前。<a href="https://www.bosei-navi.mhlw.go.jp/leave/" target="_blank" style="font-weight:bold; color:#007BFF;">厚労省サイト</a>にて計算したものを入力）
+        </label>          
+        <div class="example">妻が専業主婦の場合は空欄</div>
+        <input type="date" name="q2" required>
     </div>
 
     <div class="form-group">
-        <label>産前休業終了日（任意）</label>
-        <div class="example">出産予定日と同日・妻が専業主婦の場合は空欄</div>
-        <input type="date" name="q3">
+        <label>産前休業終了日（出産予定日と同日）</label>
+        <div class="example">妻が専業主婦の場合は空欄</div>
+        <input type="date" name="q3" required>
     </div>
 
     <div class="form-group">
         <label>妻の育休取得希望期間</label>
         <div class="example">例：産前休業から翌年4月の慣らし保育（二週間程度）終了まで</div>
-        <textarea name="q4" required></textarea>
+        <textarea name="q4" placeholder="妻が専業主婦の場合は空欄"></textarea>
     </div>
 
     <div class="form-group">
         <label>夫の育休取得希望期間</label>
         <div class="example">例：予定日を含む2ヶ月＋3月から慣らし保育終了まで1ヶ月</div>
-        <textarea name="q5" required></textarea>
+        <textarea name="q5" placeholder="夫が専業主夫の場合は空欄"></textarea>
     </div>
 
     <div class="form-group">
@@ -81,13 +83,13 @@
     </div>
 
     <div class="form-group">
-        <label>（第二子以降の場合）上の子どもの情報（任意）</label>
-        <div class="example">例：人数・年齢・通園状況／該当なしなら空欄</div>
+        <label>（第二子以降の場合）上の子どもの情報</label>
+        <div class="example">例：人数・年齢・通園状況</div>
         <textarea name="q8" placeholder="該当なしの場合は空欄"></textarea>
     </div>
 
     <div class="form-group">
-        <label>保育園の入園希望時期（複数選択可）</label><br>
+        <label>保育園/幼稚園の入園希望時期（複数選択可）</label><br>
         <label><input type="checkbox" name="q9" value="① 4月入園"> ① 4月入園</label><br>
         <label><input type="checkbox" name="q9" value="② 1歳の誕生日月"> ② 1歳の誕生日月</label><br>
         <label><input type="checkbox" name="q9" value="③ 空きが出次第"> ③ 空きが出次第</label><br>
@@ -100,7 +102,8 @@
     
 
     <div class="form-group">
-        <label>保育園の入園難易度（任意）</label><br>
+        <label>保育園の入園難易度（任意）</label>
+        <div class="example">幼稚園の場合は不要</div><br>
         <label><input type="radio" name="q10" value="高"> 高</label>
         <label><input type="radio" name="q10" value="中"> 中</label>
         <label><input type="radio" name="q10" value="低"> 低</label>
@@ -129,13 +132,13 @@
     <h2>＊仕事・職場の状況</h2>
 
     <div class="form-group">
-        <label>夫の就業状況</label>
+        <label>夫の就業状況（雇用形態、正社員/正職員、派遣社員/職員、自営業/自由業、パート、専業主フ、学生等）</label>
         <div class="example">例：正社員 フルタイム</div>
         <textarea name="q14" required></textarea>
     </div>
 
     <div class="form-group">
-        <label>妻の就業状況</label>
+        <label>妻の就業状況（雇用形態、正社員/正職員、派遣社員/職員、自営業/自由業、パート、専業主フ、学生等）</label>
         <div class="example">例：正社員 フルタイム</div>
         <textarea name="q15" required></textarea>
     </div>
@@ -148,20 +151,20 @@
 
     <div class="form-group">
         <label>妻の職場に独自の産休・育休制度はありますか？</label>
-        <div class="example">例：なし</div>
+        <div class="example">例：有給育休1ヶ月あり</div>
         <textarea name="q17" required></textarea>
     </div>
 
     <div class="form-group">
         <label>夫の職場での育休取得への理解度</label><br>
-        <label><input type="radio" name="q18" value="高" required> 高</label>
+        <label><input type="radio" name="q18" value="高"> 高</label>
         <label><input type="radio" name="q18" value="中"> 中</label>
         <label><input type="radio" name="q18" value="低"> 低</label>
     </div>
 
     <div class="form-group">
         <label>妻の職場での育休取得への理解度</label><br>
-        <label><input type="radio" name="q19" value="高" required> 高</label>
+        <label><input type="radio" name="q19" value="高"> 高</label>
         <label><input type="radio" name="q19" value="中"> 中</label>
         <label><input type="radio" name="q19" value="低"> 低</label>
     </div>
@@ -169,13 +172,13 @@
     <div class="form-group">
         <label>夫の育休後の働き方</label>
         <div class="example">例：フルタイム・フレックス利用</div>
-        <textarea name="q20" required></textarea>
+        <textarea name="q20"></textarea>
     </div>
 
     <div class="form-group">
         <label>妻の育休後の働き方</label>
         <div class="example">例：フルタイム・育児時間・週2日在宅勤務</div>
-        <textarea name="q21" required></textarea>
+        <textarea name="q21"></textarea>
     </div>
 
     <!-- 希望と不安 -->
