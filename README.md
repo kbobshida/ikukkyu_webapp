@@ -15,19 +15,6 @@ ChatGPT用のプロンプト（指示文）を自動生成する**Flaskアプリ
 - Flask
 - HTML/CSS (Jinja2テンプレート)
 
-## 📂 ディレクトリ構成
-
-ikukyu-form-app/
-├── app.py              # Flaskアプリケーション本体
-├── templates/          # テンプレートフォルダ
-│   ├── form.html       # 入力フォーム画面
-│   └── result.html     # プロンプト生成結果画面
-├── static/             # 静的ファイル（CSSなど）
-│   └── style.css       # （任意）スタイルシート
-├── requirements.txt    # 必要パッケージリスト
-└── README.md           # プロジェクト説明ファイル
-
-
 
 ## ⚙️ セットアップ手順
 
