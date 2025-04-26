@@ -20,7 +20,7 @@ ChatGPT用のプロンプト（指示文）を自動生成する**Flaskアプリ
 
 1. リポジトリをクローン
     ```bash
-    git clone https://github.com/your-username/ikukyu-form-app.git
+    git clone https://github.com/kbobshida/ikukkyu_webapp.git
     cd ikukyu-form-app
     ```
 
