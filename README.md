@@ -21,7 +21,7 @@ ChatGPT用のプロンプト（指示文）を自動生成する**Flaskアプリ
 1. リポジトリをクローン
     ```bash
     git clone https://github.com/kbobshida/ikukkyu_webapp.git
-    cd ikukyu-form-app
+    cd ikukkyu_webapp
     ```
 
 2. 仮想環境を作成（推奨）
