@@ -61,6 +61,6 @@ ChatGPT用のプロンプト（指示文）を自動生成する**Flaskアプリ
 
 ---
 
-# 📢 メモ
+# メモ
 - Flask公式サイト：[Flask Documentation](https://flask.palletsprojects.com/)
 - ChatGPT公式サイト：[ChatGPT](https://chat.openai.com/)
