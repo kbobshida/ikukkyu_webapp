@@ -1,3 +1,5 @@
+# Flask 2.3以降では Flask-Session 0.4.0 が使用している `session_cookie_name` が削除されているため、
+# Flask を 2.2.x に固定しています。将来的には Flask-Session のアップデート対応を検討してください。
 Flask==2.2.5
 Flask-Session==0.4.0
 markdown==3.5.2
