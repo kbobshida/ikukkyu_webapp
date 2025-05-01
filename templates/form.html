@@ -21,22 +21,20 @@
     <h1>育休計画プロンプト作成フォーム</h1>
 
     <div class="description-box" style="margin-bottom: 20px; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #007BFF;">
-        <h2>説明文</h2>
+        <h3>フォームについて</h3>
         <p>このフォームは育休計画プロンプト作成に必要な情報を入力するためのものです。</p>
         <p>すべての質問に回答すると、あなた専用のプロンプト（ChatGPTへの指示文）が自動生成されます。</p>
         <p><strong>※プロンプトを生成しても、自動でChatGPTに送信されることはありません。</strong></p>
     
-        <h3>手順</h3>
+        <h3>利用手順</h3>
         <ol>
             <li>フォームの各項目に回答する</li>
             <li>「プロンプトを生成する」をクリック（自動的に次ページへ遷移）</li>
             <li>「このプロンプトをコピー」をクリック</li>
             <li><a href="https://chat.openai.com/" target="_blank" style="font-weight:bold; color:#007BFF;">ChatGPT</a> を立ち上げて貼り付ける</li>
             <li>フォームの入力情報を修正したい場合は、ブラウザの戻るボタンで前のページに戻る</li>
-            <li>大まかなプランができたら職場の人事/労務に確認相談する
-                noteもご参照ください。</li>
+            <li>大まかなプランができたら職場の人事/労務に確認相談する</li>
         </ol>
-        <li><a href="https://note.com/teamwagaya/n/n4ce30ad3feac?sub_rt=share_pb" target="_blank" style="font-weight:bold; color:#007BFF;">note</a> もご参照ください。</li>
         <h3>注意事項</h3>
         <ul>
             <li><strong>ChatGPTからの提案は育休検討の際の「たたき台」として活用してください。</strong></li>
@@ -52,6 +50,7 @@
                 </ul>
             </li>
             <li>会社独自の制度もあるので必ず勤務先の人事/労務に確認してください。</li>
+            <li><a href="https://note.com/teamwagaya/n/n4ce30ad3feac?sub_rt=share_pb" target="_blank" style="font-weight:bold; color:#007BFF;">note</a> もご参照ください。</li>
         </ul>
     </div>
     
@@ -259,31 +258,7 @@
     </form>
 </div>
 
-<!-- 自動計算JS -->
-<script>
-    function calculateDates() {
-      const dueDate = document.getElementById("due_date").value;
-      const isMultiple = document.getElementById("multiple_yes").checked;
-  
-      if (!dueDate) {
-        alert("出産予定日を入力してください");
-        return;
-      }
-  
-      fetch("/calculate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ due_date: dueDate, is_multiple: isMultiple })
-      })
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById("pre_start").value = data["産前休業開始日"];
-        document.getElementById("pre_end").value = data["産前休業終了日"];
-        document.getElementById("post_start").value = data["産後休業開始日"];
-        document.getElementById("post_end").value = data["産後休業終了日"];
-      });
-    }
-  </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 </html>
