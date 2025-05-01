@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from flask_session import Session
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
@@ -39,20 +40,48 @@ def form():
         # チェックボックス＋その他（5年後のライフキャリア希望）
         q26_list = request.form.getlist("q26")
         q26_other = request.form.get("q26_other", "").strip()
-        if "⑥ その他" in q26_list and q26_other:
+        if "⑧ その他" in q26_list and q26_other:
             q26_list.append(f"（内容：{q26_other}）")
         responses["q26"] = "、".join(q26_list)
 
-        # セッション保存してリダイレクト
+        # セッションに保存
         session["responses"] = responses
         return redirect(url_for("result"))
 
     return render_template("form.html")
+
 
 @app.route("/result", methods=["GET"])
 def result():
     responses = session.get("responses", {})
     return render_template("result.html", responses=responses)
 
+
+# 日付自動計算用のエンドポイント（JavaScriptから呼ばれる）
+@app.route("/calculate", methods=["POST"])
+def calculate():
+    data = request.get_json()
+    due_date_str = data.get("due_date")
+    is_multiple = data.get("is_multiple")
+
+    try:
+        due_date = datetime.strptime(due_date_str, "%Y-%m-%d")
+    except (ValueError, TypeError):
+        return jsonify({"error": "無効な日付形式です"}), 400
+
+    pre_days = 97 if is_multiple else 41
+    pre_start = due_date - timedelta(days=pre_days)
+    pre_end = due_date
+    post_start = due_date + timedelta(days=1)
+    post_end = due_date + timedelta(weeks=8)
+
+    return jsonify({
+        "産前休業開始日": pre_start.strftime("%Y-%m-%d"),
+        "産前休業終了日": pre_end.strftime("%Y-%m-%d"),
+        "産後休業開始日": post_start.strftime("%Y-%m-%d"),
+        "産後休業終了日": post_end.strftime("%Y-%m-%d")
+    })
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5005)
