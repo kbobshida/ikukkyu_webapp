@@ -131,7 +131,7 @@ button,
 }
 
 /* プロンプト用テキストエリア */
-#promptText {
+.prompt-text {
     width: 100%;
     font-family: 'Noto Sans JP', monospace;
     font-size: 14px;
@@ -143,6 +143,7 @@ button,
     resize: vertical;
     white-space: pre-wrap;
 }
+
 
 /* ChatGPTリンクボックス */
 .chatgpt-link-box {
