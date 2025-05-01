@@ -2,3 +2,4 @@ Flask==2.3.3
 Flask-Session==0.4.0
 markdown==3.5.2
 MarkupSafe==2.1.5
+gunicorn
