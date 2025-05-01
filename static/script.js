@@ -1,3 +1,27 @@
+function calculateDates() {
+    const dueDate = document.getElementById("due_date").value;
+    const isMultiple = document.getElementById("multiple_yes").checked;
+  
+    if (!dueDate) {
+      alert("出産予定日を入力してください");
+      return;
+    }
+  
+    fetch("/calculate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ due_date: dueDate, is_multiple: isMultiple })
+    })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("pre_start").value = data["産前休業開始日"];
+        document.getElementById("pre_end").value = data["産前休業終了日"];
+        document.getElementById("post_start").value = data["産後休業開始日"];
+        document.getElementById("post_end").value = data["産後休業終了日"];
+      });
+  }
+  
+
 function copyToClipboard(id) {
     const textarea = document.getElementById(id);
     textarea.select();
@@ -23,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const data = await response.json();
             document.getElementById("step2-result").innerHTML = `
-                <h4>送信したプロンプト</h4>
                 <button type="button" class="btn secondary-btn" onclick="copyToClipboard('promptText2')">このプロンプトをコピー</button>
                 <textarea id="promptText2" class="prompt-text" rows="30">${data.prompt}</textarea>`;
         });
@@ -45,7 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const data = await response.json();
             document.getElementById("step3-result").innerHTML = `
-                <h4>生成されたプロンプト</h4>
                 <button type="button" class="btn secondary-btn" onclick="copyToClipboard('carryoverPrompt')">このプロンプトをコピー</button>
                 <textarea id="carryoverPrompt" class="prompt-text" rows="20">${data.prompt}</textarea>`;
         });
@@ -67,7 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const data = await response.json();
             document.getElementById("step4-result").innerHTML = `
-                <h4>生成されたメール文</h4>
                 <button type="button" class="btn secondary-btn" onclick="copyToClipboard('emailPrompt')">メールをコピー</button>
                 <textarea id="emailPrompt" class="prompt-text" rows="25">${data.prompt}</textarea>`;
         });
