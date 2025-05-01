@@ -12,46 +12,62 @@
     <!-- ChatGPTへの案内 -->
     <div class="chatgpt-link-box">
         <h2>ChatGPTで育休プランを確認する</h2>
-        <p>下に表示されたプロンプトをコピーして、以下のリンクからChatGPTに貼り付けてください。</p>
-        <p><a href="https://chat.openai.com/" target="_blank" style="font-weight: bold; color: #00a67e; text-decoration: underline;">ChatGPTを開く（新しいタブ）</a></p>
-        <p>※プロンプトはこの画面下部に表示されています。</p>
+        <h3>利用手順</h3>
+        <ol>
+            <li>
+                <a href="https://chat.openai.com/" target="_blank" style="font-weight: bold; color: #00a67e; text-decoration: underline;">
+                    ChatGPTを開く（新しいタブ）
+                </a>
+            </li>
+            <li>
+                以下のステップに従って、それぞれプロンプトをコピーしてChatGPTに貼り付ける
+                <ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 20px;">
+                    <li>ステップ1：3つの育休プランの提案を依頼する</li>
+                    <li>ステップ2：選んだ育休プランの詳細を依頼する</li>
+                    <li>オプション：有給休暇を反映したスケジュールを依頼する</li>
+                    <li>ステップ3：勤務先人事への相談メール作成を依頼する</li>
+                </ul>
+            </li>
+        </ol>
     </div>
 
     <!-- ステップ1：生成済みプロンプト -->
     <h1>ChatGPTプロンプト</h1>
+    <h2>ステップ１：３つの育休プランの提案を依頼する</h2>
     <button type="button" class="btn secondary-btn" onclick="copyToClipboard('promptText1')">このプロンプトをコピー</button>
     <textarea id="promptText1" class="prompt-text" rows="50">{{ prompt | safe }}</textarea>
 
     <!-- ステップ2：非同期 -->
     <div class="section" style="margin-top: 50px;">
-        <h2>ステップ2：選んだプランの詳細を依頼</h2>
+        <h2>ステップ2：選んだ育休プランの詳細を依頼する</h2>
         <form id="followupForm">
-            <label for="selected_plan">選んだプランを選択してください：</label><br>
+            <label for="selected_plan">ChatGPTが提案した３つのプランから詳細が知りたいプランを一つ選んでください。</label><br>
             <select name="selected_plan" id="selected_plan" required>
                 <option value="">-- プランを選んでください --</option>
                 <option value="①">① 私たちの希望を最大限反映した育休取得プラン</option>
                 <option value="②">② 給付金・社会保険料の免除等、経済的な面を最大限活用したプラン</option>
                 <option value="③">③ 希望を反映しつつ夫と妻の協業体制が強化できるプラン</option>
             </select>
-            <button type="submit" class="btn secondary-btn">このプランについて詳しく聞く</button>
+            <button type="submit" class="btn primary-btn">プロンプトを生成する</button>
         </form>
         <div id="step2-result" style="margin-top: 20px;"></div>
     </div>
 
     <!-- ステップ3：非同期 -->
     <div class="section" style="margin-top: 60px;">
-        <h2>オプション：有給休暇を反映したスケジュールを依頼</h2>
+        <h2>オプション：有給休暇を反映したスケジュールを依頼する</h2>
         <form id="carryoverForm">
             <label for="paid_leave_days">翌年に持ち越せない有給休暇の日数（日）：</label>
             <input type="number" name="paid_leave_days" id="paid_leave_days" min="1" required placeholder="例：5">
-            <button type="submit" class="copy-btn">プロンプトを生成する</button>
+            <label>プロンプトは産前休業の頭につけるように設定しています。必要に応じてプロンプトを変更してもOKです。人事に相談しながら適宜調整ください。</label>
+            <button type="submit" class="btn primary-btn">プロンプトを生成する</button>
         </form>
         <div id="step3-result" style="margin-top: 20px;"></div>
     </div>
 
     <!-- ステップ4：非同期 -->
     <div class="section" style="margin-top: 60px;">
-        <h2>ステップ4：勤務先人事への相談メールを作成</h2>
+        <h2>ステップ３：勤務先人事への相談メール作成を依頼する</h2>
         <form id="emailForm">
             <label for="email_target">作成するメール：</label><br>
             <select name="email_target" id="email_target" required>
@@ -59,7 +75,7 @@
                 <option value="husband">夫が勤務先に送る相談メール</option>
                 <option value="wife">妻が勤務先に送る相談メール</option>
             </select>
-            <button type="submit" class="copy-btn">メール文を生成する</button>
+            <button type="submit" class="btn primary-btn">プロンプトを生成する</button>
         </form>
         <div id="step4-result" style="margin-top: 20px;"></div>
     </div>
