@@ -8,147 +8,122 @@
 </head>
 <body>
 <div class="container">
-    <div class="chatgpt-link-box" style="margin-top: 30px; padding: 15px; background-color: #f1f8ff; border-left: 4px solid #00a67e;">
+
+    <!-- ChatGPTへの案内 -->
+    <div class="chatgpt-link-box">
         <h2>ChatGPTで育休プランを確認する</h2>
         <p>下に表示されたプロンプトをコピーして、以下のリンクからChatGPTに貼り付けてください。</p>
         <p><a href="https://chat.openai.com/" target="_blank" style="font-weight: bold; color: #00a67e; text-decoration: underline;">ChatGPTを開く（新しいタブ）</a></p>
         <p>※プロンプトはこの画面下部に表示されています。</p>
-    </div>      
-    
+    </div>
+
+    <!-- ステップ1：生成済みプロンプト -->
     <h1>ChatGPTプロンプト</h1>
-    <button type="button" class="btn secondary-btn" onclick="copyToClipboard()">このプロンプトをコピー</button>
+    <button type="button" class="btn secondary-btn" onclick="copyToClipboard('promptText1')">このプロンプトをコピー</button>
+    <textarea id="promptText1" class="prompt-text" rows="50">{{ prompt | safe }}</textarea>
 
-    <textarea id="promptText" rows="50">
-あなたは日本の育児休業制度と給付金制度に詳しい専門家です。私たち家族に最適な育児休業取得プランを3つ提案してください。 
-ーーーー
-＊提案の構成
-プラン①：私たちの希望を最大限反映した育休取得プラン
-プラン②：給付金・社会保険料の免除等、経済的な面を最大限活用したプラン
-プラン③：私たちの希望を反映しつつ夫と妻の協業体制が強化できるプラン
+    <!-- ステップ2：非同期 -->
+    <div class="section" style="margin-top: 50px;">
+        <h2>ステップ2：選んだプランの詳細を依頼</h2>
+        <form id="followupForm">
+            <label for="selected_plan">選んだプランを選択してください：</label><br>
+            <select name="selected_plan" id="selected_plan" required>
+                <option value="">-- プランを選んでください --</option>
+                <option value="①">① 私たちの希望を最大限反映した育休取得プラン</option>
+                <option value="②">② 給付金・社会保険料の免除等、経済的な面を最大限活用したプラン</option>
+                <option value="③">③ 希望を反映しつつ夫と妻の協業体制が強化できるプラン</option>
+            </select>
+            <button type="submit" class="btn secondary-btn">このプランについて詳しく聞く</button>
+        </form>
+        <div id="step2-result" style="margin-top: 20px;"></div>
+    </div>
 
-＊提案に含めること
-・産前・産後・育児休業のそれぞれの開始日、終了日
-・それぞれの期間の給付金のおおまかな情報
-・それぞれのプランのメリットとデメリット
+    <!-- ステップ3：非同期 -->
+    <div class="section" style="margin-top: 60px;">
+        <h2>オプション：有給休暇を反映したスケジュールを依頼</h2>
+        <form id="carryoverForm">
+            <label for="paid_leave_days">翌年に持ち越せない有給休暇の日数（日）：</label>
+            <input type="number" name="paid_leave_days" id="paid_leave_days" min="1" required placeholder="例：5">
+            <button type="submit" class="copy-btn">プロンプトを生成する</button>
+        </form>
+        <div id="step3-result" style="margin-top: 20px;"></div>
+    </div>
 
-＊産前・産後・育児休業日程の計算
-出産予定日を基準にします。
-産前休業：出産予定日から42日前の日付が産前休業開始日です。(多胎児は98日前)
-　　　　　産前休業の終了日は出産予定日です。
-産後休業：開始日は予定日の翌日から8週間です。
-
-育児休業は最長出産予定日から2年です。
-妻が専業主婦の場合は妻の産前・産後・育児休業の記載は不要です。
-夫が専業主夫の場合は夫の育児休業の記載は不要です。
-
-保育園入園を考慮したスケジュール：
-入園希望時期を入力した場合、慣らし保育期間を入園希望月の1日から2週間と想定し、復職日を決定してください。
-
-幼稚園入園は考慮不要です。
-ーーーー
-
-以下の「私たちの家族について」の情報をもとに、私たち家族に最適な育児休業取得パターンを3つ提案してください。 
-
-ーーーーーー
-「私たち家族について」
-
-＊基本情報
-
-出産予定日  
-【記入】：{{ responses.q1 }}
-
-産前休業開始日  
-【記入】：{{ responses.q2 }}
-
-産前休業終了日（出産予定日と同日）  
-【記入】：{{ responses.q3 }}
-
-産後休業開始日（予定日の翌日）  
-【記入】：{{ responses.q4 }}
-
-産後休業終了日（予定日から8週間後）  
-【記入】：{{ responses.q5 }}
-
-妻の育休取得希望期間  
-【記入】：{{ responses.q6 }}
-
-夫の育休取得希望期間  
-【記入】：{{ responses.q7 }}
-
-妊娠中のお子さんは多胎児ですか？  
-【記入】：{{ responses.q8 }}
-
-お子さんは第一子ですか？  
-【記入】：{{ responses.q9 }}
-
-（第二子以降の場合）上の子どもの情報  
-【記入】：{{ responses.q10 }}
-
-保育園の入園希望時期  
-【記入】：{{ responses.q11 }}
-
-保育園の入園難易度  
-【記入】：{{ responses.q12 }}
-
-家族の別居・単身赴任の予定  
-【記入】：{{ responses.q13 }}
-
-同居家族  
-【記入】：{{ responses.q14 }}
-
-親族からの育児・家事サポートの有無・頻度  
-【記入】：{{ responses.q15 }}
-
-＊仕事・職場の状況
-
-夫の就業状況  
-【記入】：{{ responses.q16 }}
-
-妻の就業状況  
-【記入】：{{ responses.q17 }}
-
-夫の職場に独自の産休・育休制度はありますか？  
-【記入】：{{ responses.q18 }}
-
-妻の職場に独自の産休・育休制度はありますか？  
-【記入】：{{ responses.q19 }}
-
-夫の職場での育休取得への理解度  
-【記入】：{{ responses.q20 }}
-
-妻の職場での育休取得への理解度  
-【記入】：{{ responses.q21 }}
-
-夫の育休後の働き方  
-【記入】：{{ responses.q22 }}
-
-妻の育休後の働き方  
-【記入】：{{ responses.q23 }}
-
-＊希望と不安
-
-育休取得で重視したいこと  
-【記入】：{{ responses.q24 }}
-
-家事代行・ベビーシッター等の利用意向  
-【記入】：{{ responses.q25 }}
-
-5年後のライフキャリアの希望  
-【記入】：{{ responses.q26 }}
-
-今、不安に思っていること・知りたいこと  
-【記入】：{{ responses.q27 }}
-    </textarea>
+    <!-- ステップ4：非同期 -->
+    <div class="section" style="margin-top: 60px;">
+        <h2>ステップ4：勤務先人事への相談メールを作成</h2>
+        <form id="emailForm">
+            <label for="email_target">作成するメール：</label><br>
+            <select name="email_target" id="email_target" required>
+                <option value="">-- 選択してください --</option>
+                <option value="husband">夫が勤務先に送る相談メール</option>
+                <option value="wife">妻が勤務先に送る相談メール</option>
+            </select>
+            <button type="submit" class="copy-btn">メール文を生成する</button>
+        </form>
+        <div id="step4-result" style="margin-top: 20px;"></div>
+    </div>
 </div>
 
 <script>
-function copyToClipboard() {
-    const textarea = document.getElementById("promptText");
+function copyToClipboard(id) {
+    const textarea = document.getElementById(id);
     textarea.select();
-    textarea.setSelectionRange(0, 99999); // モバイル対応
+    textarea.setSelectionRange(0, 99999);
     document.execCommand("copy");
     alert("プロンプトをコピーしました！");
 }
+
+document.getElementById("followupForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const selected_plan = document.getElementById("selected_plan").value;
+    if (!selected_plan) return alert("プランを選択してください。");
+
+    const response = await fetch("/followup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ selected_plan })
+    });
+    const data = await response.json();
+    document.getElementById("step2-result").innerHTML = `
+        <h4>送信したプロンプト</h4>
+        <button type="button" class="btn secondary-btn" onclick="copyToClipboard('promptText2')">このプロンプトをコピー</button>
+        <textarea id="promptText2" class="prompt-text" rows="30">${data.prompt}</textarea>`;
+});
+
+document.getElementById("carryoverForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const days = document.getElementById("paid_leave_days").value;
+    if (!days) return alert("日数を入力してください。");
+
+    const response = await fetch("/carryover", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paid_leave_days: days })
+    });
+    const data = await response.json();
+    document.getElementById("step3-result").innerHTML = `
+        <h4>生成されたプロンプト</h4>
+        <button type="button" class="btn secondary-btn" onclick="copyToClipboard('carryoverPrompt')">このプロンプトをコピー</button>
+        <textarea id="carryoverPrompt" class="prompt-text" rows="20">${data.prompt}</textarea>`;
+});
+
+document.getElementById("emailForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const target = document.getElementById("email_target").value;
+    if (!target) return alert("対象を選択してください。");
+
+    const response = await fetch("/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email_target: target })
+    });
+    const data = await response.json();
+    document.getElementById("step4-result").innerHTML = `
+        <h4>生成されたメール文</h4>
+        <button type="button" class="btn secondary-btn" onclick="copyToClipboard('emailPrompt')">メールをコピー</button>
+        <textarea id="emailPrompt" class="prompt-text" rows="25">${data.prompt}</textarea>`;
+});
 </script>
 </body>
 </html>
