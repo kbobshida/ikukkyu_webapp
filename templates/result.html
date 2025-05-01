@@ -4,21 +4,7 @@
     <meta charset="UTF-8">
     <title>育休プロンプト生成結果</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        .copy-btn {
-            background-color: #2196F3;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            margin: 10px 0;
-        }
-        .copy-btn:hover {
-            background-color: #0b7dda;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="container">
@@ -30,9 +16,9 @@
     </div>      
     
     <h1>ChatGPTプロンプト</h1>
-    <button class="copy-btn" onclick="copyToClipboard()">このプロンプトをコピー</button>
+    <button type="button" class="btn secondary-btn" onclick="copyToClipboard()">このプロンプトをコピー</button>
 
-    <textarea id="promptText" rows="50" style="width:100%; font-family:monospace;">
+    <textarea id="promptText" rows="50">
 あなたは日本の育児休業制度と給付金制度に詳しい専門家です。私たち家族に最適な育児休業取得プランを3つ提案してください。 
 ーーーー
 ＊提案の構成
