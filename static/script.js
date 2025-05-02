@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const data = await response.json();
             document.getElementById("step4-result").innerHTML = `
-                <button type="button" class="btn secondary-btn" onclick="copyToClipboard('emailPrompt')">メールをコピー</button>
+                <button type="button" class="btn secondary-btn" onclick="copyToClipboard('emailPrompt')">このプロンプトをコピー</button>
                 <textarea id="emailPrompt" class="prompt-text" rows="25">${data.prompt}</textarea>`;
         });
     }
